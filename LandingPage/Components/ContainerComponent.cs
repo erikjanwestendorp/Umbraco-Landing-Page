@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using LandingPage.Configuration;
+using LandingPage.Services;
+using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Composing;
 
 namespace LandingPage.Components
@@ -6,22 +8,33 @@ namespace LandingPage.Components
     public class ContainerComponent : IComponent
     {
         private readonly ILogger<ContainerComponent> _logger;
-        public ContainerComponent(ILogger<ContainerComponent> logger)
+        private readonly IContainerService _containerService;
+
+        
+        public ContainerComponent(ILogger<ContainerComponent> logger, IContainerService containerService)
         {
             _logger = logger;
+            _containerService = containerService;
+
         }
 
         public void Initialize()
         {
             _logger.LogInformation("Initialize ContainerComponent");
-            
-            AddContainers();
+
+            AddRootContainersContainers();
         }
 
-        public void AddContainers()
+        private void AddRootContainersContainers()
         {
-
+            foreach (var container in ContainerConfiguration.RootContainers) 
+            {
+                
+            }
+            //_dataTypeService.CreateContainer(-1, )
         }
+
+      
 
         public void Terminate()
         {
