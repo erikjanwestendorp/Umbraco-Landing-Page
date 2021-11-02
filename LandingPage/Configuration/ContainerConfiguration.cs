@@ -9,7 +9,7 @@ namespace LandingPage.Configuration
         public static List<Container> RootContainers = new()
         {
             new Container(LandingPageConstants.Containers.ContentTypes.LandingPageContainerKey, LandingPageConstants.Containers.ContentTypes.LandingPageContainerName, EntityType.ContentType),
-            new Container(LandingPageConstants.Containers.DataTypes.LandingPageContainerKey, LandingPageConstants.Containers.DataTypes.LandingPageContainerName, EntityType.ContentType)
+            new Container(LandingPageConstants.Containers.DataTypes.LandingPageContainerKey, LandingPageConstants.Containers.DataTypes.LandingPageContainerName, EntityType.DataType)
         };
     }
 

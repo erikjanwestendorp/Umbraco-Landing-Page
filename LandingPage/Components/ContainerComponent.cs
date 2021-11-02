@@ -27,11 +27,11 @@ namespace LandingPage.Components
 
         private void AddRootContainersContainers()
         {
-            foreach (var container in ContainerConfiguration.RootContainers) 
+            foreach (var container in ContainerConfiguration.RootContainers)
             {
-                
+                _containerService.Create(container);
+
             }
-            //_dataTypeService.CreateContainer(-1, )
         }
 
       

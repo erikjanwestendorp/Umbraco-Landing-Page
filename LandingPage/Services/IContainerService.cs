@@ -6,6 +6,6 @@ namespace LandingPage.Services
     public interface IContainerService
     {
         bool Exists(Container container);
-        EntityContainer Create(Container container);
+        bool Create(Container container);
     }
 }
