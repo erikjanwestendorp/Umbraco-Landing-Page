@@ -18,6 +18,9 @@ namespace LandingPage.Static
                 public static Guid LandingPageContainerKey = Guid.Parse("c351c04e-5b95-4128-8193-2414a152efc3");
                 public const string LandingPageContainerName = "LandingPage";
 
+                public static Guid PagesContainerKey = Guid.Parse("ab81e76e-275d-4716-bdae-defe73dbd463");
+                public const string PagesContainerName = "Pages";
+
             }
             
         }
