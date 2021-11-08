@@ -2,6 +2,9 @@
 using LandingPage.Models;
 using LandingPage.Static;
 using Microsoft.Extensions.Logging;
+using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Services;
 
 namespace LandingPage.Services.Implementation
@@ -48,35 +51,76 @@ namespace LandingPage.Services.Implementation
 
         public bool Create(Container container)
         {
-            if (Exists(container))
-            {
-                _logger.LogWarning("Cannot create container, container with key {containerKey} already exists", container.Key);
-                return false;
-            }
-
+            if (!Exists(container)) 
+                return CreateContainer(container);
             
-            return CreateRootContainer(container);
+            
+            _logger.LogWarning("Cannot create container, container with key {containerKey} already exists", container.Key);
+            return false;
+
+
         }
 
-        private bool CreateRootContainer(Container container)
+        private bool CreateContainer(Container container)
         {
+            return container != null && CreateContainerAttempt(container);
+        }
+
+        private bool CreateContainerAttempt(Container container)
+        {
+            if (container == null)
+                return false;
+
+            Attempt<OperationResult<OperationResultType, EntityContainer>> attempt;
+
             switch (container.Type)
             {
                 case EntityType.ContentType:
-                    var createContentTypeContainerAttempt = _contentTypeService.CreateContainer(-1, container.Key, container.Name);
-                    return createContentTypeContainerAttempt.Success;
+                    attempt = container.ParentKey != Guid.Empty 
+                        ? _contentTypeService.CreateContainer(GetParentContainerId(container), container.Key, container.Name) 
+                        : _contentTypeService.CreateContainer(-1, container.Key, container.Name);
+                    
+                    return attempt.Success;
 
                 case EntityType.DataType:
-                    var createDataTypeContainerAttempt = _dataTypeService.CreateContainer(-1, container.Key, container.Name);
-                    return createDataTypeContainerAttempt.Success;
+                    attempt = container.ParentKey != Guid.Empty
+                        ? _dataTypeService.CreateContainer(GetParentContainerId(container), container.Key, container.Name)
+                        : _dataTypeService.CreateContainer(-1, container.Key, container.Name);
+                    return attempt.Success;
 
                 case EntityType.MediaType:
-                    var createMediaTypeContainerAttempt = _dataTypeService.CreateContainer(-1, container.Key, container.Name);
-                    return createMediaTypeContainerAttempt.Success;
+                    attempt = container.ParentKey != Guid.Empty
+                        ? _mediaTypeService.CreateContainer(GetParentContainerId(container), container.Key, container.Name)
+                        : _mediaTypeService.CreateContainer(-1, container.Key, container.Name);
+                    return attempt.Success;
 
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private int GetParentContainerId(Container container)
+        {
+            var entityContainer = GetParentContainer(container);
+
+            if (entityContainer != null) 
+                return entityContainer.Id;
+            
+            
+            _logger.LogWarning("Cannot get container with key {key}", container.ParentKey);
+            return 0;
+
+        }
+
+        private EntityContainer GetParentContainer(Container container)
+        {
+            return container.Type switch
+            {
+                EntityType.ContentType => _contentTypeService.GetContainer(container.ParentKey),
+                EntityType.DataType => _dataTypeService.GetContainer(container.ParentKey),
+                EntityType.MediaType => _mediaTypeService.GetContainer(container.ParentKey),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
          

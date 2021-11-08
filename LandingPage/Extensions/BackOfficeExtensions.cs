@@ -8,7 +8,9 @@ namespace LandingPage.Extensions
         public static IUmbracoBuilder AddLandingPageConfiguration(this IUmbracoBuilder builder)
         {
             // Add components
-            builder.Components().Append<ContainerComponent>();
+            builder.Components()
+                .Append<ContainerComponent>()
+                .Append<DataTypeComponent>();
 
             return builder;
 

@@ -11,6 +11,11 @@ namespace LandingPage.Configuration
             new Container(LandingPageConstants.Containers.ContentTypes.LandingPageContainerKey, LandingPageConstants.Containers.ContentTypes.LandingPageContainerName, EntityType.ContentType),
             new Container(LandingPageConstants.Containers.DataTypes.LandingPageContainerKey, LandingPageConstants.Containers.DataTypes.LandingPageContainerName, EntityType.DataType)
         };
+
+        public static List<Container> SubContainers = new()
+        {
+            new Container(LandingPageConstants.Containers.ContentTypes.PagesContainerKey, LandingPageConstants.Containers.ContentTypes.PagesContainerName, LandingPageConstants.Containers.ContentTypes.LandingPageContainerKey, EntityType.ContentType)
+        };
     }
 
 

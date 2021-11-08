@@ -23,6 +23,7 @@ namespace LandingPage.Components
             _logger.LogInformation("Initialize ContainerComponent");
 
             AddRootContainersContainers();
+            AddSubContainers();
         }
 
         private void AddRootContainersContainers()
@@ -34,7 +35,13 @@ namespace LandingPage.Components
             }
         }
 
-      
+        private void AddSubContainers()
+        {
+            foreach (var container in ContainerConfiguration.SubContainers)
+            {
+                _containerService.Create(container);
+            }
+        }
 
         public void Terminate()
         {
