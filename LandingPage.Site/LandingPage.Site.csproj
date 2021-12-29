@@ -18,11 +18,20 @@
     <ItemGroup>
         <Content Include="App_Plugins/**" CopyToOutputDirectory="Always" />
         <Content Include="umbraco/**" CopyToOutputDirectory="Always" />
+        <Compile Remove="Smidge\**" />
+        <Content Remove="Smidge\**" />
         <Content Remove="umbraco/Data/**" />
         <Content Remove="umbraco/Logs/**" />
         <Content Remove="umbraco/mediacache/**" />
         <Content Remove="umbraco/models/**" />
         <Compile Include="umbraco/models/**" Exclude="**/*.flag" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Smidge\**" />
+      <None Remove="Smidge\**" />
     </ItemGroup>
 
 
@@ -35,6 +44,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LandingPage\LandingPage.csproj" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Folder Include="Assets\Images\" />
     </ItemGroup>
 
     <!-- Set this to true if ModelsBuilder mode is not InMemoryAuto-->
